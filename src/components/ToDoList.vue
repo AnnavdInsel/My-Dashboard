@@ -1,6 +1,7 @@
 <template>
   <div class="to-do-list-wrapper">
     <h2>⏲️ To-Do-Liste</h2>
+    <input type="text" id="userInput">Was willst du tun ?
   </div>
 </template>
 
@@ -13,5 +14,11 @@
   padding: 1rem;
   background-color: #ffffff;
   border-radius: 0.5rem;
+}
+
+#userInput {
+  margin: .5rem;
+  border-style: none;
+  font-size: 20px;
 }
 </style>
