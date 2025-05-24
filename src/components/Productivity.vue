@@ -1,17 +1,14 @@
 <template>
-  <div class="productivity-wrapper">
-    <h2>🎯 Produktivität</h2>
+  <div>
+    <h2>📊 Productivity</h2>
+    <p>Hier wird deine Produktivität angezeigt.</p>
   </div>
 </template>
 
 <script setup>
-// Hier kannst du später Ziele, Statistiken oder Fokuszeiten einbauen
+// Platz für Logik
 </script>
 
 <style scoped>
-.productivity-wrapper {
-  padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-}
+/* Optionales Styling */
 </style>
