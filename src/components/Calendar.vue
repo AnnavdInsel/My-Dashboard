@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>📅 Calendar</h2>
+    <h2>📅 Kalender</h2>
     <p>Hier kommt dein Kalender rein.</p>
   </div>
 </template>

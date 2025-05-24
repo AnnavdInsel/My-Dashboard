@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>🗒️ Notes</h2>
+    <h2>🗒️ Notizen</h2>
     <p>Hier kannst du dir Notizen machen.</p>
   </div>
 </template>

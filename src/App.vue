@@ -25,12 +25,12 @@ import { ref } from 'vue'
 const activeComponent = ref(null)
 
 const components = [
-  { name: 'ToDo', component: () => import('./components/ToDo.vue') },
-  { name: 'Calendar', component: () => import('./components/Calendar.vue') },
+  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue') },
+  { name: 'Kalender', component: () => import('./components/Calendar.vue') },
   { name: 'Timer', component: () => import('./components/Timer.vue') },
-  { name: 'Notes', component: () => import('./components/Notes.vue') },
-  { name: 'Settings', component: () => import('./components/Settings.vue') },
-  { name: 'Productivity', component: () => import('./components/Productivity.vue') },
+  { name: 'Notizen', component: () => import('./components/Notes.vue') },
+  { name: 'Einstellungen', component: () => import('./components/Settings.vue') },
+  { name: 'Produktivität', component: () => import('./components/Productivity.vue') },
 ]
 
 function openModal(componentImport) {
