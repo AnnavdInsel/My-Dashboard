@@ -25,12 +25,12 @@ import { ref } from 'vue'
 const activeComponent = ref(null)
 
 const components = [
-  { name: 'ToDo', component: () => import('./components/ToDo.vue') },
-  { name: 'Calendar', component: () => import('./components/Calendar.vue') },
+  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue') },
+  { name: 'Kalender', component: () => import('./components/Calendar.vue') },
   { name: 'Timer', component: () => import('./components/Timer.vue') },
-  { name: 'Notes', component: () => import('./components/Notes.vue') },
-  { name: 'Settings', component: () => import('./components/Settings.vue') },
-  { name: 'Productivity', component: () => import('./components/Productivity.vue') },
+  { name: 'Notizen', component: () => import('./components/Notes.vue') },
+  { name: 'Einstellungen', component: () => import('./components/Settings.vue') },
+  { name: 'Produktivität', component: () => import('./components/Productivity.vue') },
 ]
 
 function openModal(componentImport) {
@@ -48,20 +48,31 @@ function openModal(componentImport) {
 }
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; /* Weniger Abstand */
   margin-top: 2rem;
+  justify-items: center;
 }
+
 .card {
-  background-color: #f0f0f0;
-  padding: 1.5rem;
-  border-radius: 10px;
+  background-color: #fffbea; /* sanfter Papierfarbton */
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  max-width: 300px;
+  height: 180px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: transform 0.2s ease;
+  border: 1px solid #e0dcbc;
 }
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
+
 .modal {
   position: fixed;
   top: 5%;

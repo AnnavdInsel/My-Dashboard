@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>📊 Productivity</h2>
+    <h2>📊 Produktivität</h2>
     <p>Hier wird deine Produktivität angezeigt.</p>
   </div>
 </template>

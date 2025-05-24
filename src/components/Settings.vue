@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>⚙️ Settings</h2>
+    <h2>⚙️ Einstellungen</h2>
     <p>Hier kannst du deine Einstellungen anpassen.</p>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>📝 ToDo</h2>
+    <h2>📝 ToDo-Liste</h2>
     <p>Hier kommt deine ToDo-Liste rein.</p>
 
     <input type="text" v-model="task" placeholder="Gib hier deine Aufgabe ein" />
