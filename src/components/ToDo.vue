@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>📝 ToDo-Liste</h2>
-    <p>Hier kommt deine ToDo-Liste rein.</p>
+    <p>Was musst du tun? Schreibe es auf und bestätige die Eingabe mit Enter!</p>
 
     <input
       type="text"
@@ -12,7 +12,7 @@
     />
     <br />
     <div class="task-section">
-      <h3>Heutigen Aufgaben:</h3>
+      <h3>Meine heutigen Aufgaben:</h3>
       <ul class="task-list">
         <li
           class="task-item"
@@ -73,11 +73,18 @@ function updateLocalStorage() {
   font-size: 20px;
   width: 100%;
   box-sizing: border-box;
+  background: #d9ebfa;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .task-section {
-  width: 500px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 60px auto 0 auto;
+  padding: 1rem;
+  background: #bbd9f5;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .task-list {
@@ -87,18 +94,20 @@ function updateLocalStorage() {
 }
 
 .task-item {
-  background: #e0e0e0;
-  padding: 10px 15px;
-  margin: 10px 0;
-  border-radius: 6px;
-  font-size: 20px;
+  background: #d9ebfa;
+  padding: 12px 18px;
+  margin: 12px 0;
+  border-radius: 12px;
+  font-size: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease;
 }
 
 .task-item:hover {
-  background: #d0d0d0;
+  background: #ffffff;
 }
 
 .task-text {
@@ -131,7 +140,7 @@ button:hover {
 }
 
 .done:hover {
-  background-color: #c8f7c5;
+  background-color: #ffffff;
   cursor: default;
 }
 

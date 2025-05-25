@@ -1,11 +1,19 @@
 <template>
   <div class="dashboard">
     <h1>📚 Mein Dashboard</h1>
+    <br /><br />
     <div class="cards">
+      <!-- Footer-Buttons -->
+      <div class="dashboard-buttons">
+        <button class="dashboard-btn left">Speichere dein Board</button>
+        <button class="dashboard-btn right">Lösche dein Board</button>
+      </div>
+
       <div
         v-for="(card, index) in components"
         :key="index"
         class="card"
+        :style="{ backgroundColor: card.color }"
         @click="openModal(card.component)"
       >
         {{ card.name }}
@@ -27,12 +35,16 @@ import { ref } from 'vue'
 const activeComponent = ref(null)
 
 const components = [
-  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue') },
-  { name: 'Kalender', component: () => import('./components/Calendar.vue') },
-  { name: 'Timer', component: () => import('./components/Timer.vue') },
-  { name: 'Notizen', component: () => import('./components/Notes.vue') },
-  { name: 'Einstellungen', component: () => import('./components/Settings.vue') },
-  { name: 'Produktivität', component: () => import('./components/Productivity.vue') },
+  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue'), color: '#d0ebff' }, // Pastellblau
+  { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' }, // Pastellrosa
+  { name: 'Timer', component: () => import('./components/Timer.vue'), color: '#e0ffe0' }, // Pastellgrün
+  { name: 'Notizen', component: () => import('./components/Notes.vue'), color: '#fff4cc' }, // Pastellgelb
+  { name: 'Einstellungen', component: () => import('./components/Settings.vue'), color: '#e0f7fa' }, // Pastellcyan
+  {
+    name: 'Produktivität',
+    component: () => import('./components/Productivity.vue'),
+    color: '#f3e5f5',
+  },
 ]
 
 function openModal(componentImport) {
@@ -43,25 +55,64 @@ function openModal(componentImport) {
 </script>
 
 <style scoped>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .dashboard {
+  min-height: 100vh; /* volle Höhe des Viewports */
+  width: 100%;
   text-align: center;
   padding: 2rem;
   font-family: Arial, sans-serif;
+  background-color: #fff5f7;
+  box-sizing: border-box;
+}
+.dashboard-buttons {
+  position: fixed;
+  bottom: 60px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.dashboard-btn {
+  pointer-events: auto;
+  background-color: #ffd6d6;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.dashboard-btn:hover {
+  background-color: #ffbdbd;
 }
 
 .cards {
   display: grid;
-  gap: 1rem;
-  justify-items: center;
+  gap: 100px;
+  justify-content: center;
   padding: 1rem;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* <--- NEU */
+  max-width: 1000px;
+  margin: 0 auto; /* zentriert den Block */
 }
 
 .card {
-  background-color: #fffbea; /* sanfter Papierfarbton */
   padding: 2.5rem;
   border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 300px;
   height: 180px;
@@ -83,7 +134,7 @@ function openModal(componentImport) {
   left: 10%;
   width: 80%;
   height: 80%;
-  background: white;
+  background: rgb(255, 250, 247);
   border: 2px solid #ccc;
   padding: 2rem;
   overflow-y: auto;
@@ -109,7 +160,7 @@ function openModal(componentImport) {
   font-size: 15px;
   border: none;
   border-radius: 5px;
-  background-color: #666;
+  background-color: #a0a0a0;
   margin: 25px 0;
   cursor: pointer;
 }
