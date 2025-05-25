@@ -105,12 +105,13 @@ function openModal(componentImport) {
 }
 
 .btn {
-  padding: 15px;
+  padding: 10px;
   font-size: 15px;
   border: none;
   border-radius: 5px;
   background-color: #666;
-  margin: 10px 0;
+  margin: 25px 0;
+  cursor: pointer;
 }
 
 @media (min-width: 600px) {
