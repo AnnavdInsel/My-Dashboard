@@ -226,7 +226,7 @@ body {
   background-color: #fffbe6;
   padding: 12px;
   border-radius: 8px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
   font-family: 'Segoe UI', sans-serif;
   font-size: 14px;
   white-space: pre-wrap;
