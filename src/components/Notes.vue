@@ -12,26 +12,34 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
 const noteText = ref('')
 const savedMessage = ref(false)
 
 const saveNote = () => {
-  localStorage.setItem('notizen', noteText.value)
+  if (!noteText.value.trim()) return
+
+  let notes = []
+  try {
+    notes = JSON.parse(localStorage.getItem('notizen') || '[]')
+  } catch (e) {
+    console.warn('Speicher beschädigt – leere Liste wird verwendet')
+  }
+
+  notes.push(noteText.value.trim())
+  localStorage.setItem('notizen', JSON.stringify(notes))
+
+  noteText.value = ''
   savedMessage.value = true
+  window.dispatchEvent(new Event('notiz-gespeichert'))
+
   setTimeout(() => (savedMessage.value = false), 2000)
 }
 
 const clearNote = () => {
   noteText.value = ''
-  localStorage.removeItem('notizen')
 }
-
-onMounted(() => {
-  const saved = localStorage.getItem('notizen')
-  if (saved) noteText.value = saved
-})
 </script>
 
 <style scoped>

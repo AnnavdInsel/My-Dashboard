@@ -1,9 +1,15 @@
 <template>
   <div class="dashboard">
+    <!-- 📌 Angepinnte Notizzettel -->
+    <div class="sticky-notes">
+      <div v-for="(note, index) in savedNotes" :key="index" class="sticky-note">
+        {{ note }}
+      </div>
+    </div>
+
     <h1>📚 Mein Dashboard</h1>
-    <br /><br />
+
     <div class="cards">
-      <!-- Footer-Buttons -->
       <div class="dashboard-buttons">
         <button class="dashboard-btn left">Speichere dein Board</button>
         <button class="dashboard-btn right">Lösche dein Board</button>
@@ -30,16 +36,43 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
+// Aktive Komponente fürs Modal
 const activeComponent = ref(null)
 
+// Gespeicherte Notizen
+const savedNotes = ref([])
+
+// Lädt Notizen aus dem localStorage
+function loadNotes() {
+  try {
+    const raw = localStorage.getItem('notizen')
+    savedNotes.value = raw ? JSON.parse(raw) : []
+  } catch (e) {
+    console.warn('Fehler beim Parsen von Notizen. Reset:', e)
+    localStorage.removeItem('notizen') // 🧼 kaputten Eintrag entfernen
+    savedNotes.value = []
+  }
+}
+
+// Event Listener Setup
+onMounted(() => {
+  loadNotes()
+  window.addEventListener('notiz-gespeichert', loadNotes)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('notiz-gespeichert', loadNotes)
+})
+
+// Karten-Konfiguration für das Dashboard
 const components = [
-  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue'), color: '#d0ebff' }, // Pastellblau
-  { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' }, // Pastellrosa
-  { name: 'Timer', component: () => import('./components/Timer.vue'), color: '#e0ffe0' }, // Pastellgrün
-  { name: 'Notizen', component: () => import('./components/Notes.vue'), color: '#fff4cc' }, // Pastellgelb
-  { name: 'Einstellungen', component: () => import('./components/Settings.vue'), color: '#e0f7fa' }, // Pastellcyan
+  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue'), color: '#d0ebff' },
+  { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' },
+  { name: 'Timer', component: () => import('./components/Timer.vue'), color: '#e0ffe0' },
+  { name: 'Notizen', component: () => import('./components/Notes.vue'), color: '#fff4cc' },
+  { name: 'Einstellungen', component: () => import('./components/Settings.vue'), color: '#e0f7fa' },
   {
     name: 'Produktivität',
     component: () => import('./components/Productivity.vue'),
@@ -47,6 +80,7 @@ const components = [
   },
 ]
 
+// Modal-Komponente dynamisch laden
 function openModal(componentImport) {
   componentImport().then((mod) => {
     activeComponent.value = mod.default
@@ -175,5 +209,27 @@ body {
   .cards {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.sticky-notes {
+  position: fixed;
+  top: 60px;
+  left: 20px;
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 900;
+}
+
+.sticky-note {
+  background-color: #fffbe6;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 </style>
