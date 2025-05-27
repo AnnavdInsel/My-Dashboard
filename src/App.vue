@@ -2,10 +2,35 @@
   <div class="dashboard">
     <!-- 📌 Angepinnte Notizzettel -->
     <div class="sticky-notes">
-      <div v-for="(note, index) in savedNotes" :key="index" class="sticky-note">
-        <button class="delete-note" @click.stop="deleteNote(index)">✖</button>
-        {{ note }}
-      </div>
+      <draggable
+        v-model="savedNotes"
+        item-key="id"
+        handle=".drag-handle"
+        animation="200"
+        tag="div"
+        class="sticky-notes-inner"
+      >
+        <template #item="{ element, index }">
+          <div class="sticky-note" @dblclick="startEditing(index)">
+            <div class="drag-handle" style="cursor: grab">☰</div>
+            <button class="delete-note" @click.stop="deleteNote(index)">✖</button>
+
+            <template v-if="editingNoteIndex === index">
+              <textarea
+                :id="`edit-note-${index}`"
+                v-model="editedText"
+                @blur="saveEditedNote(index)"
+                @keyup.enter="saveEditedNote(index)"
+                class="note-editor"
+              ></textarea>
+            </template>
+
+            <template v-else>
+              {{ element.text }}
+            </template>
+          </div>
+        </template>
+      </draggable>
     </div>
 
     <h1>
@@ -52,50 +77,67 @@
 </template>
 
 <script setup>
+import draggable from 'vuedraggable'
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
-// variable für das input-feld oben im Dashboard Titel
+
 const input = ref(null)
-
-// variable für den editier-modus
 const isEditing = ref(false)
-
-// editiert den Dashboard Titel
 const dashboardTitle = ref('Mein Dashboard')
+const activeComponent = ref(null)
+const savedNotes = ref([])
+const editingNoteIndex = ref(null)
+const editedText = ref('')
 
-// aktiviert bearbeitungsmodus durch doppelklick
 function enableEditing() {
   isEditing.value = true
-  nextTick(() => {
-    input.value.focus()
-    console.log('Bearbeitungs-Modus wurde aktiviert!')
-  })
+  nextTick(() => input.value && input.value.focus())
 }
 
-// deaktiviert bearbeitungsmodus durch rausklicken oder enter
 function disableEditing() {
-  console.log('Bearbeitungs-Modus deaktiviert!')
-  console.log(`Neuer Dashboard-Name: ${dashboardTitle.value}`)
   isEditing.value = false
 }
-// Aktive Komponente fürs Modal
-const activeComponent = ref(null)
 
-// Gespeicherte Notizen
-const savedNotes = ref([])
-
-// Lädt Notizen aus dem localStorage
 function loadNotes() {
   try {
     const raw = localStorage.getItem('notizen')
-    savedNotes.value = raw ? JSON.parse(raw) : []
+    const parsed = raw ? JSON.parse(raw) : []
+    savedNotes.value = parsed.map((note, i) =>
+      typeof note === 'string' ? { id: Date.now() + i, text: note } : note,
+    )
   } catch (e) {
     console.warn('Fehler beim Parsen von Notizen. Reset:', e)
-    localStorage.removeItem('notizen') // 🧼 kaputten Eintrag entfernen
     savedNotes.value = []
   }
 }
 
-// Event Listener Setup
+function openModal(componentImport) {
+  componentImport().then((mod) => {
+    activeComponent.value = mod.default
+  })
+}
+
+function deleteNote(index) {
+  savedNotes.value.splice(index, 1)
+  localStorage.setItem('notizen', JSON.stringify(savedNotes.value))
+}
+
+function startEditing(index) {
+  editingNoteIndex.value = index
+  editedText.value = savedNotes.value[index].text
+  nextTick(() => {
+    const input = document.querySelector(`#edit-note-${index}`)
+    if (input) input.focus()
+  })
+}
+
+function saveEditedNote(index) {
+  if (editedText.value.trim() !== '') {
+    savedNotes.value[index].text = editedText.value
+    localStorage.setItem('notizen', JSON.stringify(savedNotes.value))
+  }
+  editingNoteIndex.value = null
+}
+
 onMounted(() => {
   loadNotes()
   window.addEventListener('notiz-gespeichert', loadNotes)
@@ -105,7 +147,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('notiz-gespeichert', loadNotes)
 })
 
-// Karten-Konfiguration für das Dashboard
 const components = [
   { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue'), color: '#d0ebff' },
   { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' },
@@ -118,18 +159,6 @@ const components = [
     color: '#f3e5f5',
   },
 ]
-
-// Modal-Komponente dynamisch laden
-function openModal(componentImport) {
-  componentImport().then((mod) => {
-    activeComponent.value = mod.default
-  })
-}
-
-function deleteNote(index) {
-  savedNotes.value.splice(index, 1)
-  localStorage.setItem('notizen', JSON.stringify(savedNotes.value))
-}
 </script>
 
 <style scoped>
@@ -265,28 +294,34 @@ h1 input {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
-.sticky-notes {
-  position: fixed;
-  top: 60px;
-  left: 50px;
-  width: 250px;
+.sticky-notes-inner {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  z-index: 900;
+  padding-bottom: 1rem;
 }
 
+.sticky-notes {
+  position: fixed;
+  top: 50px;
+  left: 60px;
+  width: 250px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  padding-right: 20px;
+  z-index: 900;
+}
 .sticky-note {
-  position: relative; /* <- das fehlt! */
+  position: relative;
   background-color: #fffbe6;
   padding: 12px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
   font-family: 'Segoe UI', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   white-space: pre-wrap;
   word-break: break-word;
+  min-height: 50px;
 }
 
 .delete-note {
@@ -298,6 +333,28 @@ h1 input {
   font-size: 1rem;
   cursor: pointer;
   color: rgb(117, 115, 115);
+}
+.note-editor {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 15px;
+  resize: none;
+  font-family: 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+  background-color: transparent;
+  outline: none;
+}
+.drag-handle {
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  font-size: 1.2rem;
+  color: rgb(117, 115, 115);
+  user-select: none;
 }
 
 .login\/logout {
