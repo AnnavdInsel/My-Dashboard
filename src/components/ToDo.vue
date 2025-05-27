@@ -99,11 +99,13 @@ function updateLocalStorage() {
   margin: 12px 0;
   border-radius: 12px;
   font-size: 18px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto; /* Text links, Buttons rechts */
+  gap: 1rem;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   transition: background 0.3s ease;
+  word-break: break-word;
 }
 
 .task-item:hover {
@@ -111,9 +113,14 @@ function updateLocalStorage() {
 }
 
 .task-text {
-  flex-grow: 1;
-  text-align: left;
-  padding-right: 1rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.task-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
 }
 
 .task-actions button {
@@ -137,11 +144,6 @@ button:hover {
   background-size: 200% 100%;
   background-position: 0% 0%;
   animation: greenSwipe 0.8s ease-out forwards;
-}
-
-.done:hover {
-  background-color: #ffffff;
-  cursor: default;
 }
 
 .done .task-actions button:first-child {

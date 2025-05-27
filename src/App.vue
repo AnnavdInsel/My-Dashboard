@@ -8,7 +8,20 @@
       </div>
     </div>
 
-    <h1>📚 Mein Dashboard</h1>
+    <h1>
+      📚
+      <template v-if="!isEditing">
+        <span @dblclick="enableEditing">{{ dashboardTitle }}</span>
+      </template>
+      <template v-else>
+        <input
+          v-model="dashboardTitle"
+          @blur="disableEditing"
+          @keyup.enter="disableEditing"
+          ref="input"
+        />
+      </template>
+    </h1>
 
     <div class="cards">
       <div class="dashboard-buttons">
@@ -39,8 +52,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+// variable für das input-feld oben im Dashboard Titel
+const input = ref(null)
 
+// variable für den editier-modus
+const isEditing = ref(false)
+
+// editiert den Dashboard Titel
+const dashboardTitle = ref('Mein Dashboard')
+
+// aktiviert bearbeitungsmodus durch doppelklick
+function enableEditing() {
+  isEditing.value = true
+  nextTick(() => {
+    input.value.focus()
+    console.log('Bearbeitungs-Modus wurde aktiviert!')
+  })
+}
+
+// deaktiviert bearbeitungsmodus durch rausklicken oder enter
+function disableEditing() {
+  console.log('Bearbeitungs-Modus deaktiviert!')
+  console.log(`Neuer Dashboard-Name: ${dashboardTitle.value}`)
+  isEditing.value = false
+}
 // Aktive Komponente fürs Modal
 const activeComponent = ref(null)
 
@@ -139,6 +175,17 @@ body {
 
 .dashboard-btn:hover {
   background-color: #ffbdbd;
+}
+
+h1 input {
+  background: transparent;
+  font-size: 32px;
+  text-align: center;
+  border: none;
+  border-bottom: 2px solid #333;
+  outline: none;
+  padding: 4px 0;
+  font-weight: bold;
 }
 
 .cards {
