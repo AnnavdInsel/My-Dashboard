@@ -25,7 +25,6 @@ export default defineConfig([
   ...pluginVue.configs['flat/essential'],
   skipFormatting,
 
-  // ⬇️ NEU: Prettier als Regel aktivieren
   {
     plugins: {
       prettier: pluginPrettier,
