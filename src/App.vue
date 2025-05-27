@@ -3,6 +3,7 @@
     <!-- 📌 Angepinnte Notizzettel -->
     <div class="sticky-notes">
       <div v-for="(note, index) in savedNotes" :key="index" class="sticky-note">
+        <button class="delete-note" @click.stop="deleteNote(index)">✖</button>
         {{ note }}
       </div>
     </div>
@@ -13,6 +14,8 @@
       <div class="dashboard-buttons">
         <button class="dashboard-btn left">Speichere dein Board</button>
         <button class="dashboard-btn right">Lösche dein Board</button>
+        <button class="login/logout">👤</button>
+        <button class="Einstellungen">⚙️</button>
       </div>
 
       <div
@@ -72,7 +75,7 @@ const components = [
   { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' },
   { name: 'Timer', component: () => import('./components/Timer.vue'), color: '#e0ffe0' },
   { name: 'Notizen', component: () => import('./components/Notes.vue'), color: '#fff4cc' },
-  { name: 'Einstellungen', component: () => import('./components/Settings.vue'), color: '#e0f7fa' },
+  { name: 'Dateien', component: () => import('./components/Dateien.vue'), color: '#e0f7fa' },
   {
     name: 'Produktivität',
     component: () => import('./components/Productivity.vue'),
@@ -85,6 +88,11 @@ function openModal(componentImport) {
   componentImport().then((mod) => {
     activeComponent.value = mod.default
   })
+}
+
+function deleteNote(index) {
+  savedNotes.value.splice(index, 1)
+  localStorage.setItem('notizen', JSON.stringify(savedNotes.value))
 }
 </script>
 
@@ -125,7 +133,7 @@ body {
   padding: 10px 18px;
   font-size: 14px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   transition: background-color 0.2s ease;
 }
 
@@ -214,8 +222,8 @@ body {
 .sticky-notes {
   position: fixed;
   top: 60px;
-  left: 20px;
-  width: 220px;
+  left: 50px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -223,6 +231,7 @@ body {
 }
 
 .sticky-note {
+  position: relative; /* <- das fehlt! */
   background-color: #fffbe6;
   padding: 12px;
   border-radius: 8px;
@@ -231,5 +240,64 @@ body {
   font-size: 14px;
   white-space: pre-wrap;
   word-break: break-word;
+}
+
+.delete-note {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: rgb(117, 115, 115);
+}
+
+.login\/logout {
+  position: fixed;
+  top: 60px;
+  right: 60px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #333;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: background-color 0.2s ease;
+}
+
+.login\/logout:hover {
+  background-color: #f0f0f0;
+}
+
+.Einstellungen {
+  position: fixed;
+  bottom: 140px;
+  right: 60px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  color: #333;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: background-color 0.2s ease;
+}
+
+.Einstellungen:hover {
+  background-color: #f0f0f0;
 }
 </style>

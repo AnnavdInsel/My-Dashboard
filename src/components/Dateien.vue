@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>⚙️ Einstellungen</h2>
-    <p>Hier kannst du deine Einstellungen anpassen.</p>
+    <h2>📁 Dateien</h2>
+    <p>Hier kannst du beliebige Dateien ablegen.</p>
   </div>
 </template>
 
