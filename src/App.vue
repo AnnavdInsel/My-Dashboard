@@ -53,6 +53,11 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useToast } from 'vue-toastification'
+
+// popup fenster
+const toast = useToast()
+
 // variable für das input-feld oben im Dashboard Titel
 const input = ref(null)
 
@@ -71,11 +76,28 @@ function enableEditing() {
   })
 }
 
-// deaktiviert bearbeitungsmodus durch rausklicken oder enter
+// deaktiviert bearbeitungsmodus durch rausklicken oder enter und sendet neuen namen ans backend
 function disableEditing() {
   console.log('Bearbeitungs-Modus deaktiviert!')
-  console.log(`Neuer Dashboard-Name: ${dashboardTitle.value}`)
   isEditing.value = false
+
+  fetch('http://localhost:3000/api/dashboard-title', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: dashboardTitle.value }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        toast.success('✅ Titel erfolgreich gespeichert!')
+      } else {
+        toast.warning('⚠️ Antwort vom Server war nicht wie erwartet')
+      }
+    })
+    .catch((err) => {
+      toast.error('❌ Netzwerkfehler beim Speichern')
+      console.error(err)
+    })
 }
 // Aktive Komponente fürs Modal
 const activeComponent = ref(null)
@@ -95,10 +117,18 @@ function loadNotes() {
   }
 }
 
-// Event Listener Setup
 onMounted(() => {
   loadNotes()
   window.addEventListener('notiz-gespeichert', loadNotes)
+
+  // Dashboard-Titel vom Server holen
+  fetch('http://localhost:3000/api/dashboard-title')
+    .then((res) => res.json())
+    .then((data) => {
+      dashboardTitle.value = data.title
+      console.log('Titel vom Server geladen:', data.title)
+    })
+    .catch((err) => console.error('Fehler beim Laden des Titels:', err))
 })
 
 onBeforeUnmount(() => {
