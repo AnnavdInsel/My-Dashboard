@@ -148,14 +148,30 @@ onBeforeUnmount(() => {
 })
 
 const components = [
-  { name: 'ToDo-Liste', component: () => import('./components/ToDo.vue'), color: '#d0ebff' },
-  { name: 'Kalender', component: () => import('./components/Calendar.vue'), color: '#ffe0e9' },
-  { name: 'Timer', component: () => import('./components/Timer.vue'), color: '#e0ffe0' },
-  { name: 'Notizen', component: () => import('./components/Notes.vue'), color: '#fff4cc' },
-  { name: 'Dateien', component: () => import('./components/Dateien.vue'), color: '#e0f7fa' },
+  {
+    name: 'ToDo-Liste',
+    component: () => import('./components/dashboard-todo.vue'),
+    color: '#d0ebff',
+  },
+  {
+    name: 'Kalender',
+    component: () => import('./components/dashboard-calendar.vue'),
+    color: '#ffe0e9',
+  },
+  { name: 'Timer', component: () => import('./components/dashboard-timer.vue'), color: '#e0ffe0' },
+  {
+    name: 'Notizen',
+    component: () => import('./components/dashboard-notes.vue'),
+    color: '#fff4cc',
+  },
+  {
+    name: 'Dateien',
+    component: () => import('./components/dashboard-dateien.vue'),
+    color: '#e0f7fa',
+  },
   {
     name: 'Produktivität',
-    component: () => import('./components/Productivity.vue'),
+    component: () => import('./components/dashboard-productivity.vue'),
     color: '#f3e5f5',
   },
 ]
