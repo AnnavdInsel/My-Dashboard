@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="notes-container">
     <h2>🗒️ Notizen</h2>
@@ -23,6 +24,7 @@ const saveNote = () => {
   let notes = []
   try {
     notes = JSON.parse(localStorage.getItem('notizen') || '[]')
+    // eslint-disable-next-line no-unused-vars
   } catch (e) {
     console.warn('Speicher beschädigt – leere Liste wird verwendet')
   }
