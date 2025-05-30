@@ -79,6 +79,7 @@
 <script setup>
 import draggable from 'vuedraggable'
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import axios from 'axios'
 
 const input = ref(null)
 const isEditing = ref(false)
@@ -94,7 +95,19 @@ function enableEditing() {
 }
 
 function disableEditing() {
+  if (!isEditing.value) return // 🔒 Nur einmal ausführen
   isEditing.value = false
+
+  axios
+    .post('http://localhost:3000/api/dashboard-title', {
+      title: dashboardTitle.value,
+    })
+    .then(() => {
+      console.log('📤 Dashboard-Titel erfolgreich an Backend gesendet')
+    })
+    .catch((err) => {
+      console.error('❌ Fehler beim Senden des Dashboard-Titels:', err)
+    })
 }
 
 function loadNotes() {
@@ -139,6 +152,17 @@ function saveEditedNote(index) {
 }
 
 onMounted(() => {
+  // ⬇️ Titel vom Server laden
+  axios
+    .get('http://localhost:3000/api/dashboard-title')
+    .then((response) => {
+      dashboardTitle.value = response.data.title
+      console.log('🟢 Titel vom Server geladen:', dashboardTitle.value)
+    })
+    .catch((err) => {
+      console.error('❌ Fehler beim Laden des Dashboard-Titels:', err)
+    })
+
   loadNotes()
   window.addEventListener('notiz-gespeichert', loadNotes)
 })

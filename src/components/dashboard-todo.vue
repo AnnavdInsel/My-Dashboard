@@ -32,37 +32,49 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
 
 const task = ref('')
 const taskList = ref([])
 
-const saved = localStorage.getItem('myTodos')
-if (saved) {
-  taskList.value = JSON.parse(saved)
+const saveTask = async () => {
+  if (!task.value.trim()) return
+  taskList.value.push({ text: task.value, done: false })
+  task.value = ''
+  await syncTodos()
 }
 
-function saveTask() {
-  if (task.value.trim() !== '') {
-    taskList.value.push({ text: task.value, done: false })
-    task.value = ''
-    updateLocalStorage()
+const completeTask = async (index) => {
+  taskList.value[index].done = true
+  await syncTodos()
+}
+
+const deleteTask = async (index) => {
+  taskList.value.splice(index, 1)
+  await syncTodos()
+}
+
+const syncTodos = async () => {
+  try {
+    await axios.post('http://localhost:3000/api/todos', {
+      todos: taskList.value,
+    })
+    console.log('📤 Todos gespeichert')
+  } catch (err) {
+    console.error('❌ Fehler beim Speichern', err)
   }
 }
 
-function completeTask(index) {
-  taskList.value[index].done = true
-  updateLocalStorage()
-}
-
-function deleteTask(index) {
-  taskList.value.splice(index, 1)
-  updateLocalStorage()
-}
-
-function updateLocalStorage() {
-  localStorage.setItem('myTodos', JSON.stringify(taskList.value))
-}
+onMounted(async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/api/todos')
+    taskList.value = res.data
+    console.log('📥 Todos vom Server geladen')
+  } catch (err) {
+    console.error('❌ Fehler beim Laden', err)
+  }
+})
 </script>
 
 <style scoped>

@@ -1,0 +1,250 @@
+[
+  {
+    "zeit": "2025-05-29T22:48:57.411Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-06",
+      "note": "hey wie gehts"
+    }
+  },
+  {
+    "zeit": "2025-05-29T22:49:11.947Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-21",
+      "note": "test"
+    }
+  },
+  {
+    "zeit": "2025-05-29T22:49:25.060Z",
+    "aktion": "Dashboard-Titel geändert",
+    "detail": "Dashboard"
+  },
+  {
+    "zeit": "2025-05-29T23:50:39.804Z",
+    "aktion": "Dashboard-Titel geändert",
+    "detail": "FF420 Dashboard"
+  },
+  {
+    "zeit": "2025-05-29T23:54:07.563Z",
+    "aktion": "Dashboard-Titel geändert",
+    "detail": "FF420 Dashboard49"
+  },
+  {
+    "zeit": "2025-05-29T23:54:16.967Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-06",
+      "note": "hey wie gehts"
+    }
+  },
+  {
+    "zeit": "2025-05-29T23:54:18.650Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-06",
+      "note": "hey wie gehts"
+    }
+  },
+  {
+    "zeit": "2025-05-29T23:54:23.304Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-06",
+      "note": "hey wie gehts"
+    }
+  },
+  {
+    "zeit": "2025-05-29T23:54:27.653Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-21",
+      "note": "test"
+    }
+  },
+  {
+    "zeit": "2025-05-29T23:57:17.078Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-29",
+      "note": "hallo das ist ein test nach post get einbau"
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:01:12.640Z",
+    "aktion": "ToDos aktualisiert",
+    "detail": "Anzahl: 1"
+  },
+  {
+    "zeit": "2025-05-30T00:01:14.704Z",
+    "aktion": "ToDos aktualisiert",
+    "detail": "Anzahl: 1"
+  },
+  {
+    "zeit": "2025-05-30T00:03:31.798Z",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 2,
+      "erledigt": 1,
+      "offen": 1
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:03:41.899Z",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 1,
+      "erledigt": 0,
+      "offen": 1
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:03:46.375Z",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 1,
+      "erledigt": 1,
+      "offen": 0
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:10:48.980Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-29",
+      "note": ""
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:10:51.762Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-21",
+      "note": "test"
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:10:55.403Z",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-21",
+      "note": ""
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:24:02.138Z",
+    "aktion": "Datei hochgeladen",
+    "detail": {
+      "name": "hello world.txt",
+      "savedAs": "1748564642135-hello world.txt",
+      "type": "text/plain",
+      "size": 11
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:26:20.573Z",
+    "aktion": "Datei hochgeladen",
+    "detail": {
+      "name": "roktal lf.png",
+      "savedAs": "1748564780570-roktal lf.png",
+      "type": "image/png",
+      "size": 78827
+    }
+  },
+  {
+    "zeit": "2025-05-30T00:34:35.450Z",
+    "aktion": "Timer gestoppt",
+    "detail": "Dauer: 00:00:07"
+  },
+  {
+    "zeit": "2025-05-30 02:42:01 (z)",
+    "aktion": "Timer gestoppt",
+    "detail": "Dauer: 00:00:05"
+  },
+  {
+    "zeit": "2025-05-30 02:43:04 (CEST)",
+    "aktion": "Timer gestoppt",
+    "detail": "Dauer: 00:00:02"
+  },
+  {
+    "zeit": "2025-05-30 03:00:42 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Lernen",
+      "dauer": "3 Sek."
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:00:51 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Freizeit",
+      "dauer": "6 Sek."
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:01:09 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Arbeit",
+      "dauer": "14 Sek."
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:21:49 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-30",
+      "note": "testtesttesttest"
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:22:05 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-31",
+      "note": "WHATUP"
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:22:09 (CEST)",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 0,
+      "erledigt": 0,
+      "offen": 0
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:22:21 (CEST)",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 1,
+      "erledigt": 0,
+      "offen": 1
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:24:15 (CEST)",
+    "aktion": "Timer gestoppt",
+    "detail": "Dauer: 00:00:02"
+  },
+  {
+    "zeit": "2025-05-30 03:24:36 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Sport",
+      "dauer": "12 Sek."
+    }
+  },
+  {
+    "zeit": "2025-05-30 03:24:53 (CEST)",
+    "aktion": "Datei hochgeladen",
+    "detail": {
+      "name": "index.html",
+      "savedAs": "1748568293554-index.html",
+      "type": "text/html",
+      "size": 966
+    }
+  }
+]

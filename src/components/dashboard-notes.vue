@@ -13,38 +13,53 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const noteText = ref('')
 const savedMessage = ref(false)
+const today = new Date().toISOString().slice(0, 10) // z.B. "2025-05-30"
 
-const saveNote = () => {
+const loadNote = async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/notes')
+    const notes = await res.json()
+    noteText.value = notes[today] || ''
+  } catch (err) {
+    console.error('Fehler beim Laden der Notiz:', err)
+  }
+}
+
+const saveNote = async () => {
   if (!noteText.value.trim()) return
 
-  let notes = []
   try {
-    notes = JSON.parse(localStorage.getItem('notizen') || '[]')
-    // eslint-disable-next-line no-unused-vars
-  } catch (e) {
-    console.warn('Speicher beschädigt – leere Liste wird verwendet')
+    await fetch('http://localhost:3000/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: today, note: noteText.value.trim() }),
+    })
+
+    noteText.value = ''
+    savedMessage.value = true
+    window.dispatchEvent(new Event('notiz-gespeichert'))
+
+    setTimeout(() => (savedMessage.value = false), 2000)
+  } catch (err) {
+    console.error('Fehler beim Speichern der Notiz:', err)
   }
-
-  notes.push(noteText.value.trim())
-  localStorage.setItem('notizen', JSON.stringify(notes))
-
-  noteText.value = ''
-  savedMessage.value = true
-  window.dispatchEvent(new Event('notiz-gespeichert'))
-
-  setTimeout(() => (savedMessage.value = false), 2000)
 }
 
 const clearNote = () => {
   noteText.value = ''
 }
+
+onMounted(() => {
+  loadNote()
+})
 </script>
 
 <style scoped>
+/* 👇 Alles bleibt 1:1 wie im Original – Design wird NICHT verändert */
 .notes-container {
   background: #fffdf5;
   border: 1px solid #ccc;
