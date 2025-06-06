@@ -246,5 +246,50 @@
       "type": "text/html",
       "size": 966
     }
+  },
+  {
+    "zeit": "2025-05-30 12:52:45 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-30",
+      "note": "testtesttesttest"
+    }
+  },
+  {
+    "zeit": "2025-05-30 12:53:18 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-31",
+      "note": "testwtdhgfjgvh"
+    }
+  },
+  {
+    "zeit": "2025-05-30 12:53:32 (CEST)",
+    "aktion": "Timer gestoppt",
+    "detail": "Dauer: 00:00:04"
+  },
+  {
+    "zeit": "2025-05-30 12:54:18 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Lernen",
+      "dauer": "4 Sek."
+    }
+  },
+  {
+    "zeit": "2025-05-30 12:55:48 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2025-05-30",
+      "note": "testtesttesttest"
+    }
+  },
+  {
+    "zeit": "2025-05-30 12:56:05 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Haushalt",
+      "dauer": "1 Sek."
+    }
   }
 ]
