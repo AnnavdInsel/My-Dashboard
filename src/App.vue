@@ -345,7 +345,7 @@ h1 input {
   position: fixed;
   top: 50px;
   left: 60px;
-  width: 250px;
+  width: 260px;
   max-height: calc(100vh - 150px);
   overflow-y: auto;
   padding-right: 20px;
