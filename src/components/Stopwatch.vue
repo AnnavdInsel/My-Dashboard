@@ -1,10 +1,12 @@
 <template>
   <div class="stopwatch-wrapper">
     <button class="plus-button" @click="$emit('add-stopwatch')">+</button>
-    <h3>⏱️ Stoppuhr:</h3>
+    <h3>⏱️ Stoppuhr</h3>
     <p class="time-display">{{ formatted }}</p>
-    <button @click="toggle">{{ running ? 'Pause' : 'Start' }}</button>
-    <button @click="reset">Reset</button>
+    <div>
+      <button @click="toggle">{{ running ? 'Pause' : 'Start' }}</button>
+      <button @click="reset">Reset</button>
+    </div>
   </div>
 </template>
 
@@ -16,9 +18,9 @@ const running = ref(false)
 let interval = null
 
 const formatted = computed(() => {
-  const m = String(Math.floor(time.value / 60)).padStart(2, '0')
-  const s = String(time.value % 60).padStart(2, '0')
-  return `${m}:${s}`
+  const min = String(Math.floor(time.value / 60)).padStart(2, '0')
+  const sec = String(time.value % 60).padStart(2, '0')
+  return `${min}:${sec}`
 })
 
 function toggle() {
@@ -42,10 +44,10 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ===============================
-   Stoppuhr Container & Plus-Button
-================================= */
-.card-wrapper {
+.stopwatch-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
 
@@ -67,9 +69,15 @@ onUnmounted(() => {
   color: #007bff;
 }
 
-/* ===============================
-   Zeit-Anzeige
-================================= */
+h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2b2b2b;
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .time-display {
   font-size: 3.5rem;
   font-weight: 700;
@@ -78,5 +86,28 @@ onUnmounted(() => {
   text-align: center;
   color: #222;
   margin: 1rem 0;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  margin: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 </style>
