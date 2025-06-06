@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-container">
+  <div class="grid-container" style="padding-top: 1rem; padding-bottom: 1rem;">
     <!-- Spalte 1: LiveClock -->
     <div class="column single">
       <div class="card">
