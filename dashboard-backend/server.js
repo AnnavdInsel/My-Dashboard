@@ -7,6 +7,7 @@ import fileRoutes from './routes/files.js'
 import timerRoutes from './routes/timer.js'
 import productivityRoutes from './routes/productivity.js'
 import exportRoutes from './routes/export.js'
+import resetRoutes from './routes/reset.js'
 
 const app = express()
 const port = 3000
@@ -22,6 +23,7 @@ app.use('/uploads', express.static('uploads')) // damit Dateien öffentlich abru
 app.use('/api', timerRoutes)
 app.use('/api', productivityRoutes)
 app.use('/api', exportRoutes)
+app.use('/api', resetRoutes)
 
 app.listen(port, () => {
   console.log(`✅ Server läuft auf http://localhost:${port}`)

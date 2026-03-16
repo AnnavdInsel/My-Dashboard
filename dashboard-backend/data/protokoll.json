@@ -291,5 +291,30 @@
       "kategorie": "Haushalt",
       "dauer": "1 Sek."
     }
+  },
+  {
+    "zeit": "2026-03-16 15:44:07 (CEST)",
+    "aktion": "ToDos aktualisiert",
+    "detail": {
+      "gesamt": 1,
+      "erledigt": 1,
+      "offen": 0
+    }
+  },
+  {
+    "zeit": "2026-03-16 15:44:51 (CEST)",
+    "aktion": "Produktivität getrackt",
+    "detail": {
+      "kategorie": "Arbeit",
+      "dauer": "5 Sek."
+    }
+  },
+  {
+    "zeit": "2026-03-16 15:45:05 (CEST)",
+    "aktion": "Notiz gesetzt",
+    "detail": {
+      "date": "2026-03-16",
+      "note": "sdfsdf"
+    }
   }
 ]

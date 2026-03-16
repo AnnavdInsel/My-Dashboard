@@ -1,7 +1,7 @@
 <template>
-  <div class="dashboard">
-    <!-- 📌 Angepinnte Notizzettel -->
-    <div class="sticky-notes">
+  <div class="dashboard" :class="{ 'has-notes': savedNotes.length > 0 }">
+    <div class="sticky-sidebar">
+      <button class="add-note-btn" @click="addNote">+</button>
       <draggable
         v-model="savedNotes"
         item-key="id"
@@ -33,38 +33,38 @@
       </draggable>
     </div>
 
-    <h1>
-      📚
-      <template v-if="!isEditing">
-        <span @dblclick="enableEditing">{{ dashboardTitle }}</span>
-      </template>
-      <template v-else>
-        <input
-          v-model="dashboardTitle"
-          @blur="disableEditing"
-          @keyup.enter="disableEditing"
-          ref="input"
-        />
-      </template>
-    </h1>
+    <div class="main-content">
+      <h1>
+        📚
+        <template v-if="!isEditing">
+          <span @dblclick="enableEditing">{{ dashboardTitle }}</span>
+        </template>
+        <template v-else>
+          <input
+            v-model="dashboardTitle"
+            @blur="disableEditing"
+            @keyup.enter="disableEditing"
+            ref="input"
+          />
+        </template>
+      </h1>
 
-    <div class="cards">
-      <div class="dashboard-buttons">
-        <button class="dashboard-btn left">Speichere dein Board</button>
-        <button class="dashboard-btn right">Lösche dein Board</button>
-        <button class="login/logout">👤</button>
-        <button class="Einstellungen">⚙️</button>
+      <div class="cards">
+        <div
+          v-for="(card, index) in components"
+          :key="index"
+          class="card"
+          :style="{ backgroundColor: card.color }"
+          @click="openModal(card.component)"
+        >
+          {{ card.name }}
+        </div>
       </div>
+    </div>
 
-      <div
-        v-for="(card, index) in components"
-        :key="index"
-        class="card"
-        :style="{ backgroundColor: card.color }"
-        @click="openModal(card.component)"
-      >
-        {{ card.name }}
-      </div>
+    <div class="dashboard-buttons">
+      <button class="dashboard-btn right" @click="resetBoard">Board loeschen</button>
+      <button class="settings-btn" @click="openModal(() => import('./components/dashboard-einstellungen.vue'))">⚙️</button>
     </div>
 
     <div class="modal-background" v-if="activeComponent" @click.self="activeComponent = null">
@@ -78,7 +78,7 @@
 
 <script setup>
 import draggable from 'vuedraggable'
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import axios from 'axios'
 
 const input = ref(null)
@@ -123,6 +123,13 @@ function loadNotes() {
   }
 }
 
+function addNote() {
+  const newNote = { id: Date.now(), text: 'Neue Notiz' }
+  savedNotes.value.push(newNote)
+  localStorage.setItem('notizen', JSON.stringify(savedNotes.value))
+  nextTick(() => startEditing(savedNotes.value.length - 1))
+}
+
 function openModal(componentImport) {
   componentImport().then((mod) => {
     activeComponent.value = mod.default
@@ -151,6 +158,21 @@ function saveEditedNote(index) {
   editingNoteIndex.value = null
 }
 
+async function resetBoard() {
+  const confirmed = window.confirm('Alles wird geloescht (Todos, Notizen, Produktivitaet, Titel). Bist du sicher?')
+  if (!confirmed) return
+
+  try {
+    await axios.delete('http://localhost:3000/api/reset')
+    dashboardTitle.value = 'Mein Dashboard'
+    savedNotes.value = []
+    localStorage.removeItem('notizen')
+    window.location.reload()
+  } catch (err) {
+    console.error('Fehler beim Zuruecksetzen:', err)
+  }
+}
+
 onMounted(() => {
   // ⬇️ Titel vom Server laden
   axios
@@ -164,11 +186,6 @@ onMounted(() => {
     })
 
   loadNotes()
-  window.addEventListener('notiz-gespeichert', loadNotes)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('notiz-gespeichert', loadNotes)
 })
 
 const components = [
@@ -210,14 +227,37 @@ body {
 }
 
 .dashboard {
-  min-height: 100vh; /* volle Höhe des Viewports */
+  min-height: 100vh;
   width: 100%;
-  text-align: center;
-  padding: 2rem;
   font-family: Arial, sans-serif;
   background-color: #fff5f7;
   box-sizing: border-box;
+  display: flex;
+  padding: 2rem;
+  gap: 2rem;
 }
+
+.sticky-sidebar {
+  width: 45px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 2rem;
+  align-self: flex-start;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  transition: width 0.3s ease;
+}
+
+.has-notes .sticky-sidebar {
+  width: 180px;
+}
+
+.main-content {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
 .dashboard-buttons {
   position: fixed;
   bottom: 60px;
@@ -259,21 +299,21 @@ h1 input {
 
 .cards {
   display: grid;
-  gap: 100px;
+  gap: 2rem;
   justify-content: center;
   padding: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* <--- NEU */
-  max-width: 1000px;
-  margin: 0 auto; /* zentriert den Block */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .card {
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 300px;
-  height: 180px;
+  height: 160px;
   text-align: center;
   font-weight: bold;
   font-size: 1.2rem;
@@ -329,99 +369,114 @@ h1 input {
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 850px) {
   .cards {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+.add-note-btn {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-bottom: 0.75rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background-color: #fffbe6;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #999;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  line-height: 1;
+}
+
+.add-note-btn:hover {
+  background-color: #fff4b0;
+  color: #666;
+}
+
 .sticky-notes-inner {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   padding-bottom: 1rem;
 }
 
-.sticky-notes {
-  position: fixed;
-  top: 50px;
-  left: 60px;
-  width: 260px;
-  max-height: calc(100vh - 150px);
-  overflow-y: auto;
-  padding-right: 20px;
-  z-index: 900;
-}
 .sticky-note {
   position: relative;
-  background-color: #fffbe6;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #fffbe6 0%, #fff8cc 100%);
+  padding: 28px 10px 10px 10px;
+  border-radius: 2px;
+  box-shadow:
+    2px 2px 6px rgba(0, 0, 0, 0.15),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.04);
   font-family: 'Segoe UI', sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   white-space: pre-wrap;
   word-break: break-word;
-  min-height: 50px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.sticky-note::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, transparent 100%);
+  border-radius: 2px 2px 0 0;
 }
 
 .delete-note {
   position: absolute;
-  top: 2px;
-  right: 2px;
+  top: 3px;
+  right: 4px;
   background: transparent;
   border: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
-  color: rgb(117, 115, 115);
+  color: rgba(117, 115, 115, 0.6);
+  z-index: 2;
 }
+
+.delete-note:hover {
+  color: #c00;
+}
+
 .note-editor {
   width: 100%;
   height: 100%;
   min-height: 100%;
   border: none;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 15px;
+  border-radius: 2px;
+  padding: 0;
+  font-size: 13px;
   resize: none;
   font-family: 'Segoe UI', sans-serif;
   box-sizing: border-box;
   background-color: transparent;
   outline: none;
 }
+
 .drag-handle {
   position: absolute;
-  top: 2px;
-  left: 6px;
-  font-size: 1.2rem;
-  color: rgb(117, 115, 115);
+  top: 3px;
+  left: 5px;
+  font-size: 0.9rem;
+  color: rgba(117, 115, 115, 0.5);
   user-select: none;
+  z-index: 2;
 }
 
-.login\/logout {
-  position: fixed;
-  top: 60px;
-  right: 60px;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  color: #333;
-  border: 2px solid #ccc;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  font-size: 22px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  transition: background-color 0.2s ease;
-}
-
-.login\/logout:hover {
-  background-color: #f0f0f0;
-}
-
-.Einstellungen {
+.settings-btn {
   position: fixed;
   bottom: 140px;
   right: 60px;
@@ -439,9 +494,10 @@ h1 input {
   justify-content: center;
   z-index: 1000;
   transition: background-color 0.2s ease;
+  pointer-events: auto;
 }
 
-.Einstellungen:hover {
+.settings-btn:hover {
   background-color: #f0f0f0;
 }
 </style>
